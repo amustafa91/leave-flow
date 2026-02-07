@@ -1,0 +1,11 @@
+E:\Projects\HR\backend\LeaveFlow.Core\bin\Debug\net8.0\LeaveFlow.Core.deps.json
+E:\Projects\HR\backend\LeaveFlow.Core\bin\Debug\net8.0\LeaveFlow.Core.dll
+E:\Projects\HR\backend\LeaveFlow.Core\bin\Debug\net8.0\LeaveFlow.Core.pdb
+E:\Projects\HR\backend\LeaveFlow.Core\obj\Debug\net8.0\LeaveFlow.Core.GeneratedMSBuildEditorConfig.editorconfig
+E:\Projects\HR\backend\LeaveFlow.Core\obj\Debug\net8.0\LeaveFlow.Core.AssemblyInfoInputs.cache
+E:\Projects\HR\backend\LeaveFlow.Core\obj\Debug\net8.0\LeaveFlow.Core.AssemblyInfo.cs
+E:\Projects\HR\backend\LeaveFlow.Core\obj\Debug\net8.0\LeaveFlow.Core.csproj.CoreCompileInputs.cache
+E:\Projects\HR\backend\LeaveFlow.Core\obj\Debug\net8.0\LeaveFlow.Core.dll
+E:\Projects\HR\backend\LeaveFlow.Core\obj\Debug\net8.0\refint\LeaveFlow.Core.dll
+E:\Projects\HR\backend\LeaveFlow.Core\obj\Debug\net8.0\LeaveFlow.Core.pdb
+E:\Projects\HR\backend\LeaveFlow.Core\obj\Debug\net8.0\ref\LeaveFlow.Core.dll

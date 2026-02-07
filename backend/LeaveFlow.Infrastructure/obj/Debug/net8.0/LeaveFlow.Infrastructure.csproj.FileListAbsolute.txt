@@ -1,0 +1,15 @@
+E:\Projects\HR\backend\LeaveFlow.Infrastructure\obj\Debug\net8.0\LeaveFlow.Infrastructure.csproj.AssemblyReference.cache
+E:\Projects\HR\backend\LeaveFlow.Infrastructure\obj\Debug\net8.0\LeaveFlow.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+E:\Projects\HR\backend\LeaveFlow.Infrastructure\obj\Debug\net8.0\LeaveFlow.Infrastructure.AssemblyInfoInputs.cache
+E:\Projects\HR\backend\LeaveFlow.Infrastructure\obj\Debug\net8.0\LeaveFlow.Infrastructure.AssemblyInfo.cs
+E:\Projects\HR\backend\LeaveFlow.Infrastructure\obj\Debug\net8.0\LeaveFlow.Infrastructure.csproj.CoreCompileInputs.cache
+E:\Projects\HR\backend\LeaveFlow.Infrastructure\bin\Debug\net8.0\LeaveFlow.Infrastructure.deps.json
+E:\Projects\HR\backend\LeaveFlow.Infrastructure\bin\Debug\net8.0\LeaveFlow.Infrastructure.dll
+E:\Projects\HR\backend\LeaveFlow.Infrastructure\bin\Debug\net8.0\LeaveFlow.Infrastructure.pdb
+E:\Projects\HR\backend\LeaveFlow.Infrastructure\bin\Debug\net8.0\LeaveFlow.Core.dll
+E:\Projects\HR\backend\LeaveFlow.Infrastructure\bin\Debug\net8.0\LeaveFlow.Core.pdb
+E:\Projects\HR\backend\LeaveFlow.Infrastructure\obj\Debug\net8.0\LeaveFlo.AFAF7261.Up2Date
+E:\Projects\HR\backend\LeaveFlow.Infrastructure\obj\Debug\net8.0\LeaveFlow.Infrastructure.dll
+E:\Projects\HR\backend\LeaveFlow.Infrastructure\obj\Debug\net8.0\refint\LeaveFlow.Infrastructure.dll
+E:\Projects\HR\backend\LeaveFlow.Infrastructure\obj\Debug\net8.0\LeaveFlow.Infrastructure.pdb
+E:\Projects\HR\backend\LeaveFlow.Infrastructure\obj\Debug\net8.0\ref\LeaveFlow.Infrastructure.dll

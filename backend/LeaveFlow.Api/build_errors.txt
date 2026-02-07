@@ -1,0 +1,16 @@
+MSBuild version 17.9.4+90725d08d for .NET
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  LeaveFlow.Core -> E:\Projects\HR\backend\LeaveFlow.Core\bin\Debug\net8.0\LeaveFlow.Core.dll
+  LeaveFlow.Infrastructure -> E:\Projects\HR\backend\LeaveFlow.Infrastructure\bin\Debug\net8.0\LeaveFlow.Infrastructure.dll
+E:\Projects\HR\backend\LeaveFlow.Api\Controllers\LeaveBalancesController.cs(42,13): error CS0117: 'LeaveBalanceDto' does not contain a definition for 'PendingDays' [E:\Projects\HR\backend\LeaveFlow.Api\LeaveFlow.Api.csproj]
+E:\Projects\HR\backend\LeaveFlow.Api\Controllers\LeaveBalancesController.cs(67,13): error CS0117: 'LeaveBalanceDto' does not contain a definition for 'PendingDays' [E:\Projects\HR\backend\LeaveFlow.Api\LeaveFlow.Api.csproj]
+
+Build FAILED.
+
+E:\Projects\HR\backend\LeaveFlow.Api\Controllers\LeaveBalancesController.cs(42,13): error CS0117: 'LeaveBalanceDto' does not contain a definition for 'PendingDays' [E:\Projects\HR\backend\LeaveFlow.Api\LeaveFlow.Api.csproj]
+E:\Projects\HR\backend\LeaveFlow.Api\Controllers\LeaveBalancesController.cs(67,13): error CS0117: 'LeaveBalanceDto' does not contain a definition for 'PendingDays' [E:\Projects\HR\backend\LeaveFlow.Api\LeaveFlow.Api.csproj]
+    0 Warning(s)
+    2 Error(s)
+
+Time Elapsed 00:00:01.56

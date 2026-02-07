@@ -1,0 +1,53 @@
+@baseUrl = http://localhost:5266/api
+
+### 1. Login as Admin (copy the "token" from response)
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@leaveflow.com",
+  "password": "Admin@123"
+}
+
+###
+# After login, copy the token value from response and paste below:
+@token = PASTE_YOUR_TOKEN_HERE
+
+### 2. Get My Profile
+GET {{baseUrl}}/employees/me
+Authorization: Bearer {{token}}
+
+### 3. Get Leave Types
+GET {{baseUrl}}/leavetypes
+Authorization: Bearer {{token}}
+
+### 4. Get Settings
+GET {{baseUrl}}/settings
+Authorization: Bearer {{token}}
+
+### 5. Create Employee (HR only)
+POST {{baseUrl}}/employees
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "email": "john@example.com",
+  "password": "Password@123",
+  "firstName": "John",
+  "lastName": "Doe",
+  "gender": 0,
+  "department": "Engineering",
+  "countryCode": "AE"
+}
+
+### 6. Get All Employees
+GET {{baseUrl}}/employees
+Authorization: Bearer {{token}}
+
+### 7. Get Holidays
+GET {{baseUrl}}/holidays/AE/2026
+Authorization: Bearer {{token}}
+
+### 8. Sync Holidays from API
+POST {{baseUrl}}/holidays/sync/AE/2026
+Authorization: Bearer {{token}}
