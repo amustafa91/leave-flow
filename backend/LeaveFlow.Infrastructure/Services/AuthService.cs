@@ -35,6 +35,7 @@ public class AuthService : IAuthService
     public async Task<AuthResponse?> LoginAsync(LoginRequest request)
     {
         var employee = await _context.Employees
+            .IgnoreQueryFilters() // Bypass tenant filter to find user by email
             .FirstOrDefaultAsync(e => e.Email == request.Email && e.IsActive);
 
         if (employee == null || !BCrypt.Net.BCrypt.Verify(request.Password, employee.PasswordHash))
@@ -90,7 +91,7 @@ public class AuthService : IAuthService
     {
         // 1. Check if email already exists globally (assuming email unique across system for login)
         // Or per tenant? For simple login, let's keep it global unique.
-        if (await _context.Employees.AnyAsync(e => e.Email == request.AdminEmail))
+        if (await _context.Employees.IgnoreQueryFilters().AnyAsync(e => e.Email == request.AdminEmail))
             return (false, "Email already registered", null);
 
         var tenantId = Guid.NewGuid();
