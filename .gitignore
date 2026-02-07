@@ -10,6 +10,9 @@
 # Visual Studio Code
 .vscode/
 
+# Visual Studio
+.vs/
+
 # Environment Variables
 .env
 appsettings.Development.json
