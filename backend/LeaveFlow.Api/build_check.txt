@@ -1,0 +1,12 @@
+  Determining projects to restore...
+  Restored E:\Projects\HR\backend\LeaveFlow.Api\LeaveFlow.Api.csproj (in 242 ms).
+  2 of 3 projects are up-to-date for restore.
+  LeaveFlow.Core -> E:\Projects\HR\backend\LeaveFlow.Core\bin\Debug\net10.0\LeaveFlow.Core.dll
+  LeaveFlow.Infrastructure -> E:\Projects\HR\backend\LeaveFlow.Infrastructure\bin\Debug\net10.0\LeaveFlow.Infrastructure.dll
+  LeaveFlow.Api -> E:\Projects\HR\backend\LeaveFlow.Api\bin\Debug\net10.0\LeaveFlow.Api.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:02.27

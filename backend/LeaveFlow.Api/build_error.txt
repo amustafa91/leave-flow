@@ -1,0 +1,17 @@
+  Determining projects to restore...
+E:\Projects\HR\backend\LeaveFlow.Infrastructure\LeaveFlow.Infrastructure.csproj : warning NU1510: PackageReference Microsoft.Extensions.Http will not be pruned. Consider removing this package from your dependencies, as it is likely unnecessary. [E:\Projects\HR\backend\LeaveFlow.Api\LeaveFlow.Api.csproj]
+  All projects are up-to-date for restore.
+E:\Projects\HR\backend\LeaveFlow.Infrastructure\LeaveFlow.Infrastructure.csproj : warning NU1510: PackageReference Microsoft.Extensions.Http will not be pruned. Consider removing this package from your dependencies, as it is likely unnecessary.
+  LeaveFlow.Core -> E:\Projects\HR\backend\LeaveFlow.Core\bin\Debug\net10.0\LeaveFlow.Core.dll
+  LeaveFlow.Infrastructure -> E:\Projects\HR\backend\LeaveFlow.Infrastructure\bin\Debug\net10.0\LeaveFlow.Infrastructure.dll
+E:\Projects\HR\backend\LeaveFlow.Api\Program.cs(9,25): error CS0234: The type or namespace name 'Models' does not exist in the namespace 'Microsoft.OpenApi' (are you missing an assembly reference?) [E:\Projects\HR\backend\LeaveFlow.Api\LeaveFlow.Api.csproj]
+
+Build FAILED.
+
+E:\Projects\HR\backend\LeaveFlow.Infrastructure\LeaveFlow.Infrastructure.csproj : warning NU1510: PackageReference Microsoft.Extensions.Http will not be pruned. Consider removing this package from your dependencies, as it is likely unnecessary. [E:\Projects\HR\backend\LeaveFlow.Api\LeaveFlow.Api.csproj]
+E:\Projects\HR\backend\LeaveFlow.Infrastructure\LeaveFlow.Infrastructure.csproj : warning NU1510: PackageReference Microsoft.Extensions.Http will not be pruned. Consider removing this package from your dependencies, as it is likely unnecessary.
+E:\Projects\HR\backend\LeaveFlow.Api\Program.cs(9,25): error CS0234: The type or namespace name 'Models' does not exist in the namespace 'Microsoft.OpenApi' (are you missing an assembly reference?) [E:\Projects\HR\backend\LeaveFlow.Api\LeaveFlow.Api.csproj]
+    2 Warning(s)
+    1 Error(s)
+
+Time Elapsed 00:00:01.50

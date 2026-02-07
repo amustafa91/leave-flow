@@ -4,8 +4,8 @@ LeaveFlow is a modern, enterprise-grade Leave Management System (LMS) designed f
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Status](https://img.shields.io/badge/status-Active-success.svg)
-![Backend](https://img.shields.io/badge/backend-.NET%208-purple)
-![Frontend](https://img.shields.io/badge/frontend-Angular%2018-red)
+![Backend](https://img.shields.io/badge/backend-.NET%2010-purple)
+![Frontend](https://img.shields.io/badge/frontend-Angular%2019-red)
 ![Database](https://img.shields.io/badge/database-PostgreSQL-blue)
 
 ## 🚀 Key Features
@@ -61,7 +61,7 @@ LeaveFlow implements a robust **Column-based Multi-tenancy** strategy, ensuring 
 ## 🛠️ Tech Stack
 
 ### Backend
-- **Framework**: .NET 8 (ASP.NET Core Web API)
+- **Framework**: .NET 10 (ASP.NET Core Web API)
 - **Database**: PostgreSQL (via Npgsql)
 - **ORM**: Entity Framework Core 8
 - **Authentication**: JWT (JSON Web Tokens)
@@ -69,7 +69,7 @@ LeaveFlow implements a robust **Column-based Multi-tenancy** strategy, ensuring 
 - **Documentation**: Swagger / OpenAPI
 
 ### Frontend
-- **Framework**: Angular 18 (Standalone Components)
+- **Framework**: Angular 19 (Standalone Components)
 - **Styling**: TailwindCSS
 - **State Management**: Angular Signals
 - **HTTP Client**: Angular HttpClient
@@ -77,7 +77,7 @@ LeaveFlow implements a robust **Column-based Multi-tenancy** strategy, ensuring 
 ## ⚙️ Setup & Installation
 
 ### Prerequisites
-- .NET 8 SDK
+- .NET 10 SDK
 - Node.js (v18+)
 - PostgreSQL Database
 
