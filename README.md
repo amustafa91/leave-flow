@@ -10,9 +10,32 @@ LeaveFlow is a modern, enterprise-grade Leave Management System (LMS) designed f
 
 ## 🚀 Key Features
 
-### 🏢 Multi-tenancy
-- **Secure Isolation**: Built-in Row-Level Security (RLS) using EF Core Global Query Filters.
-- **Data Privacy**: Each tenant's data is logically isolated, preventing accidental leaks.
+### 🏢 Multi-tenancy Architecture
+LeaveFlow implements a robust **Column-based Multi-tenancy** strategy, ensuring data isolation and security.
+
+1.  **Data Isolation**: 
+    - Every tenant-specific table (`Employee`, `LeaveRequest`, `LeaveBalance`, etc.) includes a `TenantId` column.
+    - All such entities implement the `ITenantEntity` interface:
+        ```csharp
+        public interface ITenantEntity
+        {
+            Guid TenantId { get; set; }
+        }
+        ```
+
+2.  **Global Query Filters**:
+    - The `LeaveFlowDbContext` automatically applies a global filter to all queries:
+        ```csharp
+        builder.Entity<T>().HasQueryFilter(e => e.TenantId == _currentTenantService.TenantId);
+        ```
+    - This ensures that a tenant can **never** accidentally access data belonging to another tenant, even if the developer forgets to add a `Where` clause.
+
+3.  **Tenant Resolution**:
+    - The `CurrentTenantService` securely resolves the tenant from the authenticated user's **JWT Claims**.
+    - The `tenant_id` claim is embedded in the token during login, guaranteeing that all subsequent requests are scoped to that specific tenant.
+
+4.  **Automatic Seeding**:
+    - When saving new entities, the `DbContext` automatically injects the correct `TenantId` from the current context, barring explicit overrides.
 
 ### 📅 Smart Leave Management
 - **Global & Country-Specific Holidays**: Automatically syncs public holidays based on employee location.
