@@ -25,5 +25,16 @@ public class AuthController : ControllerBase
         return Ok(result);
     }
 
-    // Self-registration removed - HR adds employees via EmployeesController
+    [HttpPost("register-tenant")]
+    public async Task<ActionResult> RegisterTenant([FromBody] RegisterTenantRequest request)
+    {
+        // Handled via AuthService/Service layer ideally, but for speed implementing here
+        // We need access to DbContext directly or move logic to AuthService. 
+        // Let's add RegisterTenantAsync to IAuthService instead.
+        var result = await _authService.RegisterTenantAsync(request);
+        if (!result.Success)
+            return BadRequest(new { message = result.ErrorMessage });
+
+        return Ok(new { message = "Tenant registered successfully", tenantId = result.TenantId });
+    }
 }

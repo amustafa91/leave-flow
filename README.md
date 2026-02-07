@@ -82,6 +82,22 @@ npm start
 ```
 Navigate to `http://localhost:4200` to access the application.
 
+### 4. Managing Tenants (Create New Tenant)
+Since there is no "Sign Up" UI yet, you can create a new tenant via the API.
+
+**Endpoint:** `POST /api/Auth/register-tenant`
+**Body:**
+```json
+{
+  "companyName": "Acme Corp",
+  "adminEmail": "admin@acme.com",
+  "adminPassword": "Password123!",
+  "adminFirstName": "John",
+  "adminLastName": "Doe"
+}
+```
+*This will create a new tenant, an admin user, and default leave types. You can then log in with these credentials to access the new tenant's dashboard.*
+
 ## 📚 API Documentation
 
 The API is fully documented using Swagger. Once the backend is running, visit:

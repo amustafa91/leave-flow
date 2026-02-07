@@ -1,0 +1,338 @@
+Building...
+Wiping database...
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (82ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      DROP DATABASE leaveflow WITH (FORCE);
+Ensuring database created...
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (191ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE DATABASE leaveflow;
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (50ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE TABLE "CompanySettings" (
+          "Id" uuid NOT NULL,
+          "TenantId" uuid NOT NULL,
+          "DefaultDailyWorkingHours" numeric NOT NULL,
+          "MinLeaveHours" numeric NOT NULL,
+          "Sunday" boolean NOT NULL,
+          "Monday" boolean NOT NULL,
+          "Tuesday" boolean NOT NULL,
+          "Wednesday" boolean NOT NULL,
+          "Thursday" boolean NOT NULL,
+          "Friday" boolean NOT NULL,
+          "Saturday" boolean NOT NULL,
+          "DefaultCountryCode" text NOT NULL,
+          "CompanyName" text NOT NULL,
+          "UpdatedAt" timestamp with time zone NOT NULL,
+          CONSTRAINT "PK_CompanySettings" PRIMARY KEY ("Id")
+      );
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (7ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE TABLE "CountryWorkdays" (
+          "CountryCode" character varying(2) NOT NULL,
+          "Sunday" boolean NOT NULL,
+          "Monday" boolean NOT NULL,
+          "Tuesday" boolean NOT NULL,
+          "Wednesday" boolean NOT NULL,
+          "Thursday" boolean NOT NULL,
+          "Friday" boolean NOT NULL,
+          "Saturday" boolean NOT NULL,
+          CONSTRAINT "PK_CountryWorkdays" PRIMARY KEY ("CountryCode")
+      );
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (7ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE TABLE "Employees" (
+          "Id" uuid NOT NULL,
+          "TenantId" uuid NOT NULL,
+          "Email" text NOT NULL,
+          "FirstName" text NOT NULL,
+          "LastName" text NOT NULL,
+          "PasswordHash" text NOT NULL,
+          "Role" integer NOT NULL,
+          "Gender" integer NOT NULL,
+          "Department" text,
+          "ManagerId" uuid,
+          "IsActive" boolean NOT NULL,
+          "DailyWorkingHours" numeric,
+          "CountryCode" text NOT NULL,
+          "WorkingDays" integer,
+          "CreatedAt" timestamp with time zone NOT NULL,
+          "UpdatedAt" timestamp with time zone,
+          "Salary" text,
+          "PassportNumber" text,
+          "Phone" text,
+          "Address" text,
+          "EmergencyContact" text,
+          "NationalId" text,
+          "BankAccount" text,
+          "PassportDocumentPath" text,
+          "NationalIdDocumentPath" text,
+          CONSTRAINT "PK_Employees" PRIMARY KEY ("Id"),
+          CONSTRAINT "FK_Employees_Employees_ManagerId" FOREIGN KEY ("ManagerId") REFERENCES "Employees" ("Id") ON DELETE RESTRICT
+      );
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (6ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE TABLE "LeaveTypes" (
+          "Id" uuid NOT NULL,
+          "TenantId" uuid NOT NULL,
+          "Name" text NOT NULL,
+          "Description" text,
+          "DefaultHoursPerYear" numeric NOT NULL,
+          "RequiresApproval" boolean NOT NULL,
+          "RequiresDocument" boolean NOT NULL,
+          "ApplicableGender" integer NOT NULL,
+          "ColorCode" text NOT NULL,
+          "IsActive" boolean NOT NULL,
+          "CreatedAt" timestamp with time zone NOT NULL,
+          CONSTRAINT "PK_LeaveTypes" PRIMARY KEY ("Id")
+      );
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (5ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE TABLE "PublicHolidays" (
+          "Id" uuid NOT NULL,
+          "TenantId" uuid NOT NULL,
+          "Date" timestamp with time zone NOT NULL,
+          "Name" text NOT NULL,
+          "LocalName" text,
+          "CountryCode" text NOT NULL,
+          "Year" integer NOT NULL,
+          "IsCustom" boolean NOT NULL,
+          "IsModified" boolean NOT NULL,
+          "CreatedAt" timestamp with time zone NOT NULL,
+          CONSTRAINT "PK_PublicHolidays" PRIMARY KEY ("Id")
+      );
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (5ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE TABLE "AuditLogs" (
+          "Id" uuid NOT NULL,
+          "TenantId" uuid NOT NULL,
+          "UserId" uuid NOT NULL,
+          "Action" text NOT NULL,
+          "EntityType" text NOT NULL,
+          "EntityId" uuid NOT NULL,
+          "FieldName" text,
+          "OldValue" text,
+          "NewValue" text,
+          "IpAddress" text,
+          "UserAgent" text,
+          "CreatedAt" timestamp with time zone NOT NULL,
+          CONSTRAINT "PK_AuditLogs" PRIMARY KEY ("Id"),
+          CONSTRAINT "FK_AuditLogs_Employees_UserId" FOREIGN KEY ("UserId") REFERENCES "Employees" ("Id") ON DELETE RESTRICT
+      );
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (6ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE TABLE "Notifications" (
+          "Id" uuid NOT NULL,
+          "TenantId" uuid NOT NULL,
+          "UserId" uuid NOT NULL,
+          "Title" text NOT NULL,
+          "Message" text NOT NULL,
+          "Type" integer NOT NULL,
+          "IsRead" boolean NOT NULL,
+          "CreatedAt" timestamp with time zone NOT NULL,
+          "RelatedEntityId" uuid,
+          CONSTRAINT "PK_Notifications" PRIMARY KEY ("Id"),
+          CONSTRAINT "FK_Notifications_Employees_UserId" FOREIGN KEY ("UserId") REFERENCES "Employees" ("Id") ON DELETE CASCADE
+      );
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (5ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE TABLE "LeaveBalances" (
+          "Id" uuid NOT NULL,
+          "TenantId" uuid NOT NULL,
+          "EmployeeId" uuid NOT NULL,
+          "LeaveTypeId" uuid NOT NULL,
+          "Year" integer NOT NULL,
+          "TotalHours" numeric NOT NULL,
+          "UsedHours" numeric NOT NULL,
+          "PendingHours" numeric NOT NULL,
+          "CarriedOverHours" numeric NOT NULL,
+          "CreatedAt" timestamp with time zone NOT NULL,
+          "UpdatedAt" timestamp with time zone,
+          "Note" text,
+          CONSTRAINT "PK_LeaveBalances" PRIMARY KEY ("Id"),
+          CONSTRAINT "FK_LeaveBalances_Employees_EmployeeId" FOREIGN KEY ("EmployeeId") REFERENCES "Employees" ("Id") ON DELETE CASCADE,
+          CONSTRAINT "FK_LeaveBalances_LeaveTypes_LeaveTypeId" FOREIGN KEY ("LeaveTypeId") REFERENCES "LeaveTypes" ("Id") ON DELETE RESTRICT
+      );
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (6ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE TABLE "LeaveRequests" (
+          "Id" uuid NOT NULL,
+          "TenantId" uuid NOT NULL,
+          "EmployeeId" uuid NOT NULL,
+          "LeaveTypeId" uuid NOT NULL,
+          "StartDate" timestamp with time zone NOT NULL,
+          "EndDate" timestamp with time zone NOT NULL,
+          "LeaveHours" numeric NOT NULL,
+          "IsFullDay" boolean NOT NULL,
+          "TotalDays" numeric NOT NULL,
+          "Status" integer NOT NULL,
+          "Reason" text,
+          "MedicalCertificate" text,
+          "AttachmentPath" text,
+          "AttachmentFileName" text,
+          "PersonalNotes" text,
+          "ApproverId" uuid,
+          "ApprovedAt" timestamp with time zone,
+          "ApproverComments" text,
+          "CreatedAt" timestamp with time zone NOT NULL,
+          "UpdatedAt" timestamp with time zone,
+          CONSTRAINT "PK_LeaveRequests" PRIMARY KEY ("Id"),
+          CONSTRAINT "FK_LeaveRequests_Employees_ApproverId" FOREIGN KEY ("ApproverId") REFERENCES "Employees" ("Id") ON DELETE RESTRICT,
+          CONSTRAINT "FK_LeaveRequests_Employees_EmployeeId" FOREIGN KEY ("EmployeeId") REFERENCES "Employees" ("Id") ON DELETE CASCADE,
+          CONSTRAINT "FK_LeaveRequests_LeaveTypes_LeaveTypeId" FOREIGN KEY ("LeaveTypeId") REFERENCES "LeaveTypes" ("Id") ON DELETE RESTRICT
+      );
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE INDEX "IX_AuditLogs_CreatedAt" ON "AuditLogs" ("CreatedAt");
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE INDEX "IX_AuditLogs_UserId" ON "AuditLogs" ("UserId");
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE UNIQUE INDEX "IX_Employees_Email" ON "Employees" ("Email");
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE INDEX "IX_Employees_ManagerId" ON "Employees" ("ManagerId");
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE UNIQUE INDEX "IX_LeaveBalances_EmployeeId_LeaveTypeId_Year" ON "LeaveBalances" ("EmployeeId", "LeaveTypeId", "Year");
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE INDEX "IX_LeaveBalances_LeaveTypeId" ON "LeaveBalances" ("LeaveTypeId");
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE INDEX "IX_LeaveRequests_ApproverId" ON "LeaveRequests" ("ApproverId");
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE INDEX "IX_LeaveRequests_EmployeeId" ON "LeaveRequests" ("EmployeeId");
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE INDEX "IX_LeaveRequests_LeaveTypeId" ON "LeaveRequests" ("LeaveTypeId");
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE UNIQUE INDEX "IX_LeaveTypes_Name_TenantId" ON "LeaveTypes" ("Name", "TenantId");
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE INDEX "IX_Notifications_CreatedAt" ON "Notifications" ("CreatedAt");
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE INDEX "IX_Notifications_IsRead" ON "Notifications" ("IsRead");
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE INDEX "IX_Notifications_UserId" ON "Notifications" ("UserId");
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE UNIQUE INDEX "IX_PublicHolidays_CountryCode_Date_TenantId" ON "PublicHolidays" ("CountryCode", "Date", "TenantId");
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT FALSE
+Seeding Company Settings...
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (11ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?', @p2='?', @p3='?' (DbType = Decimal), @p4='?' (DbType = Boolean), @p5='?' (DbType = Decimal), @p6='?' (DbType = Boolean), @p7='?' (DbType = Boolean), @p8='?' (DbType = Boolean), @p9='?' (DbType = Guid), @p10='?' (DbType = Boolean), @p11='?' (DbType = Boolean), @p12='?' (DbType = DateTime), @p13='?' (DbType = Boolean)], CommandType='Text', CommandTimeout='30']
+      INSERT INTO "CompanySettings" ("Id", "CompanyName", "DefaultCountryCode", "DefaultDailyWorkingHours", "Friday", "MinLeaveHours", "Monday", "Saturday", "Sunday", "TenantId", "Thursday", "Tuesday", "UpdatedAt", "Wednesday")
+      VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13);
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT FALSE
+Seeding Leave Types...
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = Int32), @p2='?', @p3='?' (DbType = DateTime), @p4='?' (DbType = Decimal), @p5='?', @p6='?' (DbType = Boolean), @p7='?', @p8='?' (DbType = Boolean), @p9='?' (DbType = Boolean), @p10='?' (DbType = Guid), @p11='?' (DbType = Guid), @p12='?' (DbType = Int32), @p13='?', @p14='?' (DbType = DateTime), @p15='?' (DbType = Decimal), @p16='?', @p17='?' (DbType = Boolean), @p18='?', @p19='?' (DbType = Boolean), @p20='?' (DbType = Boolean), @p21='?' (DbType = Guid), @p22='?' (DbType = Guid), @p23='?' (DbType = Int32), @p24='?', @p25='?' (DbType = DateTime), @p26='?' (DbType = Decimal), @p27='?', @p28='?' (DbType = Boolean), @p29='?', @p30='?' (DbType = Boolean), @p31='?' (DbType = Boolean), @p32='?' (DbType = Guid), @p33='?' (DbType = Guid), @p34='?' (DbType = Int32), @p35='?', @p36='?' (DbType = DateTime), @p37='?' (DbType = Decimal), @p38='?', @p39='?' (DbType = Boolean), @p40='?', @p41='?' (DbType = Boolean), @p42='?' (DbType = Boolean), @p43='?' (DbType = Guid), @p44='?' (DbType = Guid), @p45='?' (DbType = Int32), @p46='?', @p47='?' (DbType = DateTime), @p48='?' (DbType = Decimal), @p49='?', @p50='?' (DbType = Boolean), @p51='?', @p52='?' (DbType = Boolean), @p53='?' (DbType = Boolean), @p54='?' (DbType = Guid)], CommandType='Text', CommandTimeout='30']
+      INSERT INTO "LeaveTypes" ("Id", "ApplicableGender", "ColorCode", "CreatedAt", "DefaultHoursPerYear", "Description", "IsActive", "Name", "RequiresApproval", "RequiresDocument", "TenantId")
+      VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10);
+      INSERT INTO "LeaveTypes" ("Id", "ApplicableGender", "ColorCode", "CreatedAt", "DefaultHoursPerYear", "Description", "IsActive", "Name", "RequiresApproval", "RequiresDocument", "TenantId")
+      VALUES (@p11, @p12, @p13, @p14, @p15, @p16, @p17, @p18, @p19, @p20, @p21);
+      INSERT INTO "LeaveTypes" ("Id", "ApplicableGender", "ColorCode", "CreatedAt", "DefaultHoursPerYear", "Description", "IsActive", "Name", "RequiresApproval", "RequiresDocument", "TenantId")
+      VALUES (@p22, @p23, @p24, @p25, @p26, @p27, @p28, @p29, @p30, @p31, @p32);
+      INSERT INTO "LeaveTypes" ("Id", "ApplicableGender", "ColorCode", "CreatedAt", "DefaultHoursPerYear", "Description", "IsActive", "Name", "RequiresApproval", "RequiresDocument", "TenantId")
+      VALUES (@p33, @p34, @p35, @p36, @p37, @p38, @p39, @p40, @p41, @p42, @p43);
+      INSERT INTO "LeaveTypes" ("Id", "ApplicableGender", "ColorCode", "CreatedAt", "DefaultHoursPerYear", "Description", "IsActive", "Name", "RequiresApproval", "RequiresDocument", "TenantId")
+      VALUES (@p44, @p45, @p46, @p47, @p48, @p49, @p50, @p51, @p52, @p53, @p54);
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT FALSE
+Seeding Admin User...
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (23ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?', @p2='?', @p3='?', @p4='?' (DbType = DateTime), @p5='?' (DbType = Decimal), @p6='?', @p7='?', @p8='?', @p9='?', @p10='?' (DbType = Int32), @p11='?' (DbType = Boolean), @p12='?', @p13='?' (DbType = Guid), @p14='?', @p15='?', @p16='?', @p17='?', @p18='?', @p19='?', @p20='?' (DbType = Int32), @p21='?', @p22='?' (DbType = Guid), @p23='?' (DbType = DateTime), @p24='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      INSERT INTO "Employees" ("Id", "Address", "BankAccount", "CountryCode", "CreatedAt", "DailyWorkingHours", "Department", "Email", "EmergencyContact", "FirstName", "Gender", "IsActive", "LastName", "ManagerId", "NationalId", "NationalIdDocumentPath", "PassportDocumentPath", "PassportNumber", "PasswordHash", "Phone", "Role", "Salary", "TenantId", "UpdatedAt", "WorkingDays")
+      VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15, @p16, @p17, @p18, @p19, @p20, @p21, @p22, @p23, @p24);
+Admin user created.
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT FALSE
+Seeding initial leave balances for admin...
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@__tenantId_0='?' (DbType = Guid)], CommandType='Text', CommandTimeout='30']
+      SELECT l."Id", l."ApplicableGender", l."ColorCode", l."CreatedAt", l."DefaultHoursPerYear", l."Description", l."IsActive", l."Name", l."RequiresApproval", l."RequiresDocument", l."TenantId"
+      FROM "LeaveTypes" AS l
+      WHERE l."TenantId" = @__tenantId_0
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (3ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = Decimal), @p2='?' (DbType = DateTime), @p3='?' (DbType = Guid), @p4='?' (DbType = Guid), @p5='?', @p6='?' (DbType = Decimal), @p7='?' (DbType = Guid), @p8='?' (DbType = Decimal), @p9='?' (DbType = DateTime), @p10='?' (DbType = Decimal), @p11='?' (DbType = Int32), @p12='?' (DbType = Guid), @p13='?' (DbType = Decimal), @p14='?' (DbType = DateTime), @p15='?' (DbType = Guid), @p16='?' (DbType = Guid), @p17='?', @p18='?' (DbType = Decimal), @p19='?' (DbType = Guid), @p20='?' (DbType = Decimal), @p21='?' (DbType = DateTime), @p22='?' (DbType = Decimal), @p23='?' (DbType = Int32), @p24='?' (DbType = Guid), @p25='?' (DbType = Decimal), @p26='?' (DbType = DateTime), @p27='?' (DbType = Guid), @p28='?' (DbType = Guid), @p29='?', @p30='?' (DbType = Decimal), @p31='?' (DbType = Guid), @p32='?' (DbType = Decimal), @p33='?' (DbType = DateTime), @p34='?' (DbType = Decimal), @p35='?' (DbType = Int32), @p36='?' (DbType = Guid), @p37='?' (DbType = Decimal), @p38='?' (DbType = DateTime), @p39='?' (DbType = Guid), @p40='?' (DbType = Guid), @p41='?', @p42='?' (DbType = Decimal), @p43='?' (DbType = Guid), @p44='?' (DbType = Decimal), @p45='?' (DbType = DateTime), @p46='?' (DbType = Decimal), @p47='?' (DbType = Int32), @p48='?' (DbType = Guid), @p49='?' (DbType = Decimal), @p50='?' (DbType = DateTime), @p51='?' (DbType = Guid), @p52='?' (DbType = Guid), @p53='?', @p54='?' (DbType = Decimal), @p55='?' (DbType = Guid), @p56='?' (DbType = Decimal), @p57='?' (DbType = DateTime), @p58='?' (DbType = Decimal), @p59='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      INSERT INTO "LeaveBalances" ("Id", "CarriedOverHours", "CreatedAt", "EmployeeId", "LeaveTypeId", "Note", "PendingHours", "TenantId", "TotalHours", "UpdatedAt", "UsedHours", "Year")
+      VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11);
+      INSERT INTO "LeaveBalances" ("Id", "CarriedOverHours", "CreatedAt", "EmployeeId", "LeaveTypeId", "Note", "PendingHours", "TenantId", "TotalHours", "UpdatedAt", "UsedHours", "Year")
+      VALUES (@p12, @p13, @p14, @p15, @p16, @p17, @p18, @p19, @p20, @p21, @p22, @p23);
+      INSERT INTO "LeaveBalances" ("Id", "CarriedOverHours", "CreatedAt", "EmployeeId", "LeaveTypeId", "Note", "PendingHours", "TenantId", "TotalHours", "UpdatedAt", "UsedHours", "Year")
+      VALUES (@p24, @p25, @p26, @p27, @p28, @p29, @p30, @p31, @p32, @p33, @p34, @p35);
+      INSERT INTO "LeaveBalances" ("Id", "CarriedOverHours", "CreatedAt", "EmployeeId", "LeaveTypeId", "Note", "PendingHours", "TenantId", "TotalHours", "UpdatedAt", "UsedHours", "Year")
+      VALUES (@p36, @p37, @p38, @p39, @p40, @p41, @p42, @p43, @p44, @p45, @p46, @p47);
+      INSERT INTO "LeaveBalances" ("Id", "CarriedOverHours", "CreatedAt", "EmployeeId", "LeaveTypeId", "Note", "PendingHours", "TenantId", "TotalHours", "UpdatedAt", "UsedHours", "Year")
+      VALUES (@p48, @p49, @p50, @p51, @p52, @p53, @p54, @p55, @p56, @p57, @p58, @p59);
+Seeding complete.
+fail: Microsoft.Extensions.Hosting.Internal.Host[11]
+      Hosting failed to start
+      System.IO.IOException: Failed to bind to address http://127.0.0.1:5266: address already in use.
+       ---> Microsoft.AspNetCore.Connections.AddressInUseException: Only one usage of each socket address (protocol/network address/port) is normally permitted.
+       ---> System.Net.Sockets.SocketException (10048): Only one usage of each socket address (protocol/network address/port) is normally permitted.
+         at System.Net.Sockets.Socket.UpdateStatusAfterSocketErrorAndThrowException(SocketError error, Boolean disconnectOnFailure, String callerName)
+         at System.Net.Sockets.Socket.DoBind(EndPoint endPointSnapshot, SocketAddress socketAddress)
+         at System.Net.Sockets.Socket.Bind(EndPoint localEP)
+         at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketTransportOptions.CreateDefaultBoundListenSocket(EndPoint endpoint)
+         at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketConnectionListener.Bind()
+         --- End of inner exception stack trace ---
+         at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketConnectionListener.Bind()
+         at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketTransportFactory.BindAsync(EndPoint endpoint, CancellationToken cancellationToken)
+         at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Infrastructure.TransportManager.BindAsync(EndPoint endPoint, ConnectionDelegate connectionDelegate, EndpointConfig endpointConfig, CancellationToken cancellationToken)
+         at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.<>c__DisplayClass28_0`1.<<StartAsync>g__OnBind|0>d.MoveNext()
+      --- End of stack trace from previous location ---
+         at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindEndpointAsync(ListenOptions endpoint, AddressBindContext context, CancellationToken cancellationToken)
+         --- End of inner exception stack trace ---
+         at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindEndpointAsync(ListenOptions endpoint, AddressBindContext context, CancellationToken cancellationToken)
+         at Microsoft.AspNetCore.Server.Kestrel.Core.LocalhostListenOptions.BindAsync(AddressBindContext context, CancellationToken cancellationToken)
+         at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.AddressesStrategy.BindAsync(AddressBindContext context, CancellationToken cancellationToken)
+         at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindAsync(ListenOptions[] listenOptions, AddressBindContext context, Func`2 useHttps, CancellationToken cancellationToken)
+         at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.BindAsync(CancellationToken cancellationToken)
+         at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.StartAsync[TContext](IHttpApplication`1 application, CancellationToken cancellationToken)
+         at Microsoft.AspNetCore.Hosting.GenericWebHostService.StartAsync(CancellationToken cancellationToken)
+         at Microsoft.Extensions.Hosting.Internal.Host.<StartAsync>b__15_1(IHostedService service, CancellationToken token)
+         at Microsoft.Extensions.Hosting.Internal.Host.ForeachService[T](IEnumerable`1 services, CancellationToken token, Boolean concurrent, Boolean abortOnFirstException, List`1 exceptions, Func`3 operation)
+Unhandled exception. System.IO.IOException: Failed to bind to address http://127.0.0.1:5266: address already in use.
+ ---> Microsoft.AspNetCore.Connections.AddressInUseException: Only one usage of each socket address (protocol/network address/port) is normally permitted.
+ ---> System.Net.Sockets.SocketException (10048): Only one usage of each socket address (protocol/network address/port) is normally permitted.
+   at System.Net.Sockets.Socket.UpdateStatusAfterSocketErrorAndThrowException(SocketError error, Boolean disconnectOnFailure, String callerName)
+   at System.Net.Sockets.Socket.DoBind(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   at System.Net.Sockets.Socket.Bind(EndPoint localEP)
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketTransportOptions.CreateDefaultBoundListenSocket(EndPoint endpoint)
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketConnectionListener.Bind()
+   --- End of inner exception stack trace ---
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketConnectionListener.Bind()
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketTransportFactory.BindAsync(EndPoint endpoint, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Infrastructure.TransportManager.BindAsync(EndPoint endPoint, ConnectionDelegate connectionDelegate, EndpointConfig endpointConfig, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.<>c__DisplayClass28_0`1.<<StartAsync>g__OnBind|0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindEndpointAsync(ListenOptions endpoint, AddressBindContext context, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindEndpointAsync(ListenOptions endpoint, AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.LocalhostListenOptions.BindAsync(AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.AddressesStrategy.BindAsync(AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindAsync(ListenOptions[] listenOptions, AddressBindContext context, Func`2 useHttps, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.BindAsync(CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.StartAsync[TContext](IHttpApplication`1 application, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Hosting.GenericWebHostService.StartAsync(CancellationToken cancellationToken)
+   at Microsoft.Extensions.Hosting.Internal.Host.<StartAsync>b__15_1(IHostedService service, CancellationToken token)
+   at Microsoft.Extensions.Hosting.Internal.Host.ForeachService[T](IEnumerable`1 services, CancellationToken token, Boolean concurrent, Boolean abortOnFirstException, List`1 exceptions, Func`3 operation)
+   at Microsoft.Extensions.Hosting.Internal.Host.StartAsync(CancellationToken cancellationToken)
+   at Microsoft.Extensions.Hosting.HostingAbstractionsHostExtensions.RunAsync(IHost host, CancellationToken token)
+   at Microsoft.Extensions.Hosting.HostingAbstractionsHostExtensions.RunAsync(IHost host, CancellationToken token)
+   at Microsoft.Extensions.Hosting.HostingAbstractionsHostExtensions.Run(IHost host)
+   at Program.<Main>$(String[] args) in E:\Projects\HR\backend\LeaveFlow.Api\Program.cs:line 243
+   at Program.<Main>(String[] args)
